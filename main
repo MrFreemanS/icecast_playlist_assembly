@@ -1,0 +1,35 @@
+import os
+
+convert_cmd = "dir2ogg -r /var/icecast/rek/"
+convert_cmd = os.system(convert_cmd)
+convert_cmd = "dir2ogg -r /var/icecast/music/"
+convert_cmd = os.system(convert_cmd)
+
+music_list = os.listdir('/var/icecast/music/')
+rek_list = os.listdir('/var/icecast/rek/')
+
+rezult_list = []
+i = 0
+j = 0
+
+for music_item in music_list:
+    i+=1
+    rezult_list.append("/var/icecast/music/" + music_item)
+    if i > 2:
+        i = 0
+        if j > len(rek_list)-1:
+            j = 0
+        rezult_list.append("/var/icecast/rek/" + rek_list[j])
+        j+=1
+
+try:
+    somefile = open("/var/icecast/playlist.txt", "w")
+    try:
+        for rezult_item in rezult_list:
+            somefile.write(rezult_item+'\n')
+    except Exception as e:
+        print(e)
+    finally:
+        somefile.close()
+except Exception as ex:
+    print(ex)
